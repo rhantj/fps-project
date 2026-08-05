@@ -21,7 +21,7 @@ FPS 게임의 기초 시스템(이동·사격·데미지·UI)을 직접 설계�
 ## 실행 방법
 
 ```bash
-git clone https://github.com/rhantj/oz_gm_01_proj02_KoMuSeo.git
+git clone https://github.com/rhantj/fps-project.git
 ```
 
 1. Unity Hub에서 `Add` → 클론한 폴더 선택
