@@ -51,24 +51,33 @@ public class PlayerController : MonoBehaviour, IDamageable, IRegistryAdder
 
     private void OnEnable()
     {
-        weaponManager.OnWeaponChanged += BindWeapon;
+        weaponManager.OnWeaponChanged += OnWeaponChanged;
+
+        // 재활성화 시 Equip()이 다시 불리지 않으므로 현재 무기와 직접 동기화한다
+        OnWeaponChanged(weaponManager.GetCurrentWeapon());
     }
 
     private void OnDisable()
     {
-        weaponManager.OnWeaponChanged -= UnBindWeapon;
+        weaponManager.OnWeaponChanged -= OnWeaponChanged;
+        UnBindWeapon();
     }
 
-    void BindWeapon(Weapon weapon)
+    void OnWeaponChanged(Weapon weapon)
     {
-        weapon.OnAmmoEmpty += AmmoEmpty;
+        UnBindWeapon();
+
         currentWeapon = weapon;
+        if (currentWeapon != null)
+            currentWeapon.OnAmmoEmpty += AmmoEmpty;
     }
 
-    void UnBindWeapon(Weapon weapon)
+    void UnBindWeapon()
     {
-        weapon.OnAmmoEmpty -= AmmoEmpty;
-        currentWeapon = weapon;
+        if (currentWeapon == null) return;
+
+        currentWeapon.OnAmmoEmpty -= AmmoEmpty;
+        currentWeapon = null;
     }
 
     public void OnMouseInput()
@@ -190,14 +199,7 @@ public class PlayerController : MonoBehaviour, IDamageable, IRegistryAdder
 
     public void ApplyDamage(DamageResult res)
     {
-        if (res.finalDamage >= playerCtx.MaxHP)
-            playerCtx.CurrentHP = Mathf.Max(playerCtx.CurrentHP - playerCtx.MaxHP, 0);
-        playerCtx.CurrentHP -= res.finalDamage;
-
-        if (playerCtx.CurrentHP <= 0)
-        {
-            playerCtx.CurrentHP = 0;
-        }
+        playerCtx.CurrentHP = Mathf.Max(playerCtx.CurrentHP - res.finalDamage, 0f);
     }
 
     public void AddRegistry()

@@ -40,7 +40,7 @@ public class Target : MonoBehaviour, IDamageable, IPoolable
         }
 
         pivot.localRotation = targetRot;
-        ObjectPoolManager.Instance.Despawn(pivot.gameObject);
+        ObjectPoolManager.Instance.Despawn(gameObject);
     }
 
     public void OnSpawned()

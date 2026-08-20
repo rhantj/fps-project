@@ -55,42 +55,41 @@ public class MeleeState : BaseState
     {
         targets.Clear();
         float half = angle * 0.5f;
+        var camForward = Camera.main.transform.forward;
 
         for (int i = 0; i < rayCount; ++i)
         {
             float currentAngle = -half + (angle / rayCount) * i;
-            var cam = Camera.main.transform.forward;
-            var dir = Quaternion.AngleAxis(currentAngle, Vector3.up) * cam;
+            var dir = Quaternion.AngleAxis(currentAngle, Vector3.up) * camForward;
 
-            if (Physics.Raycast(Controller.transform.position, dir, out var hit, distance, hitLayer))
-            {
-                Debug.DrawLine(Controller.transform.position, hit.point, Color.green);
-                targets.Add(hit.collider.gameObject);
-            }
-            else
+            if (!Physics.Raycast(Controller.transform.position, dir, out var hit, distance, hitLayer))
             {
                 Debug.DrawRay(Controller.transform.position, dir * distance, Color.red);
+                continue;
             }
 
-            foreach(var t in targets)
+            Debug.DrawLine(Controller.transform.position, hit.point, Color.green);
+
+            var target = hit.collider.gameObject;
+
+            // 부채꼴 레이가 같은 대상을 여러 번 맞히므로 1회 공격당 1회만 적용한다
+            if (!targets.Add(target)) continue;
+            if (!target.TryGetComponent<IDamageable>(out var dmg)) continue;
+
+            DamageContext context = new()
             {
-                if(t.TryGetComponent<IDamageable>(out var dmg))
-                {
-                    DamageContext context = new()
-                    {
-                        attacker = Controller.gameObject,
-                        target = t,
-                        hitPoint = hit.point,
-                        hitNormal = hit.normal,
-                        damage = 100,
-                        distance = hit.distance,
-                        damageType = DamageType.Melee,
-                        hitZone = dms.ResolveHitZone(hit.collider)
-                    };
-                    DamageResult res = dms.Pipeline.Calculate(context);
-                    dmg.ApplyDamage(res);
-                }
-            }
+                attacker = Controller.gameObject,
+                target = target,
+                hitPoint = hit.point,
+                hitNormal = hit.normal,
+                damage = 100,
+                distance = hit.distance,
+                damageType = DamageType.Melee,
+                hitZone = dms.ResolveHitZone(hit.collider)
+            };
+
+            DamageResult res = dms.Pipeline.Calculate(context);
+            dmg.ApplyDamage(res);
         }
     }
 

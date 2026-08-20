@@ -1,15 +1,15 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
-// Åºµµ °è»ê ¹× ÅºÈ¯ ½ºÆù °ü¸®
-public class BulletManger : MonoBehaviour
+// íƒ„ë„ ê³„ì‚° ë° íƒ„í™˜ ìŠ¤í° ê´€ë¦¬
+public class BulletManager : MonoBehaviour
 {
     private void Awake()
     {
         StaticRegistry.Add(this);
     }
 
-    // ÅºÈ¯ ¼ÒÈ¯ ¹× ÃÊ±âÈ­
+    // íƒ„í™˜ ì†Œí™˜ ë° ì´ˆê¸°í™”
     public void SpawnBullet(Vector3 pos, Vector3 dir, float speed, float damage, DamageSystem dms, float maxRange)
     {
         StartCoroutine(Co_SpawnBullet(pos, dir, speed, damage, dms, maxRange));
@@ -39,7 +39,7 @@ public class BulletManger : MonoBehaviour
         }
     }
 
-    // µ¥¹ÌÁö Àû¿ë ¸Ş¼­µå
+    // ë°ë¯¸ì§€ ì ìš© ë©”ì„œë“œ
     void HandleHit(RaycastHit hit, float traveled, float damage, DamageSystem dms)
     {
         if (!hit.collider.TryGetComponent<IDamageable>(out var dmg)) return;
@@ -57,5 +57,7 @@ public class BulletManger : MonoBehaviour
 
         DamageResult res = dms.Pipeline.Calculate(ctx);
         dmg.ApplyDamage(res);
+
+        Debug.Log($"Final Damage = {res.finalDamage}");
     }
 }

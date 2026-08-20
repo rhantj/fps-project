@@ -16,15 +16,31 @@ public class GrenadeDamage : MonoBehaviour
     SoundManager soundManager;
     AudioClip explosionClip;
 
+    Rigidbody rb;
+    Coroutine explosionRoutine;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        targets = new Collider[maxTargets];
+    }
+
     public void Init(WeaponContext ctx)
     {
-        targets = new Collider[maxTargets];
         damage = ctx.damage;
         maxRange = ctx.maxRange;
         this.ctx = ctx;
 
-        StopCoroutine(Co_Explosion());
-        StartCoroutine(Co_Explosion());
+        // 풀에서 재사용되면 이전 투척의 속도가 남아 투척력이 누적된다
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        // StopCoroutine(Co_Explosion())은 새 이터레이터를 넘기므로 아무것도 멈추지 않는다
+        if (explosionRoutine != null) StopCoroutine(explosionRoutine);
+        explosionRoutine = StartCoroutine(Co_Explosion());
     }
 
     private void Start()
@@ -62,10 +78,14 @@ public class GrenadeDamage : MonoBehaviour
 
                 DamageResult res = ctx.dms.Pipeline.Calculate(context);
                 dmg.ApplyDamage(res);
+
+                Debug.Log($"Final Damage = {res.finalDamage}");
             }
         }
 
         soundManager.PlaySound(explosionClip, transform.position, transform.rotation);
+
+        explosionRoutine = null;
         ObjectPoolManager.Instance.Despawn(gameObject);
     }
 }

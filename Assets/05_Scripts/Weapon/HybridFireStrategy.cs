@@ -29,13 +29,15 @@ public class HybridFireStrategy : IWeaponFireStrategy
 
                 DamageResult res = ctx.dms.Pipeline.Calculate(context);
                 dmg.ApplyDamage(res);
+
+                Debug.Log($"Final Damage = {res.finalDamage}");
             }
 
             SpawnTracer(hit.point);
             return true;
         }
 
-        var bm = StaticRegistry.Find<BulletManger>();
+        var bm = StaticRegistry.Find<BulletManager>();
         bm.SpawnBullet(ctx.muzzle.position, dir, ctx.bulletSpeed, ctx.damage, ctx.dms, ctx.maxRange);
         return true;
     }
