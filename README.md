@@ -7,6 +7,32 @@ FPS 게임의 기초 시스템(이동·사격·데미지·UI)을 직접 설계�
 
 ---
 
+## 목차
+
+- [개발 환경](#개발-환경)
+- [조작](#조작)
+- [폴더 구조](#폴더-구조)
+- [적용한 디자인 패턴](#적용한-디자인-패턴)
+  - [1. State Pattern — 플레이어 상태 관리](#1-state-pattern--플레이어-상태-관리)
+  - [2. Strategy Pattern — 사격 로직 분리](#2-strategy-pattern--사격-로직-분리)
+  - [3. Pipeline (Chain of Responsibility) — 데미지 계산](#3-pipeline-chain-of-responsibility--데미지-계산)
+  - [4. Object Pool Pattern — 인스턴스 재사용](#4-object-pool-pattern--인스턴스-재사용)
+  - [5. MVVM — UI 계층 분리](#5-mvvm--ui-계층-분리)
+  - [6. Service Locator — 매니저 참조](#6-service-locator--매니저-참조)
+  - [7. Observer Pattern — C# event 기반 통신](#7-observer-pattern--c-event-기반-통신)
+  - [8. Template Method — 공통 흐름 고정](#8-template-method--공통-흐름-고정)
+  - [9. Context Object (DTO) — 파라미터 묶음](#9-context-object-dto--파라미터-묶음)
+- [주요 시스템](#주요-시스템)
+  - [이동 시스템](#이동-시스템)
+  - [사격 시스템 — 하이브리드 탄도](#사격-시스템--하이브리드-탄도)
+  - [데미지 시스템](#데미지-시스템)
+  - [게임 상태 관리](#게임-상태-관리)
+  - [사운드 시스템](#사운드-시스템)
+- [사용 에셋](#사용-에셋)
+- [개선 예정](#개선-예정)
+
+---
+
 ## 개발 환경
 
 | 항목 | 버전 |
