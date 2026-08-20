@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -174,13 +174,13 @@ public class UIManager : MonoBehaviour, IRegistryAdder
         int idx = rewindList.LastIndexOf(target);
         if (idx < 0) return;
 
-        // target À§¿¡ ÀÖ´Â °ÍµéºÎÅÍ ´İ±â
+        // target ìœ„ì— ìˆëŠ” ê²ƒë“¤ë¶€í„° ë‹«ê¸°
         for (int i = rewindList.Count - 1; i > idx; --i)
         {
             var p = rewindList[i];
             if (!p) { rewindList.RemoveAt(i); continue; }
 
-            if (p == hudUI) continue; // HUD´Â ´İÁö ¾ÊÀ½
+            if (p == hudUI) continue; // HUDëŠ” ë‹«ì§€ ì•ŠìŒ
 
             var key = panelKeys[p];
             UnbindVM(key, p);

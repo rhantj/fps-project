@@ -1,5 +1,5 @@
-using System.Collections.Generic;
-// ±¸ÇöµÈ Modifier¸¦ ÅëÇØ µ¥¹ÌÁö °è»ê
+ï»¿using System.Collections.Generic;
+// êµ¬í˜„ëœ Modifierë¥¼ í†µí•´ ë°ë¯¸ì§€ ê³„ì‚°
 
 public class DamagePipeline
 {

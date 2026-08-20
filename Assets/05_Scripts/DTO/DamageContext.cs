@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
-// µ¥¹ÌÁö °è»ê DTO
+// ë°ë¯¸ì§€ ê³„ì‚° DTO
 
-// µ¥¹ÌÁöÀÇ Á¤º¸ Á¦°ø
+// ë°ë¯¸ì§€ì˜ ì •ë³´ ì œê³µ
 public struct DamageContext
 {
     public GameObject attacker;
@@ -17,7 +17,7 @@ public struct DamageContext
     public HitZone hitZone;
 }
 
-// °è»êµÈ µ¥¹ÌÁö ±¸Á¶Ã¼
+// ê³„ì‚°ëœ ë°ë¯¸ì§€ êµ¬ì¡°ì²´
 public struct DamageResult
 {
     public float finalDamage;
@@ -25,7 +25,7 @@ public struct DamageResult
     public bool isBlocked;
 }
 
-// ÅºÈ¯, Æø¹ß, ±ÙÁ¢ ÆÇ´Ü
+// íƒ„í™˜, í­ë°œ, ê·¼ì ‘ íŒë‹¨
 public enum DamageType
 {
     Bullet,
@@ -33,7 +33,7 @@ public enum DamageType
     Melee
 }
 
-// È÷Æ® ºÎÀ§
+// íˆíŠ¸ ë¶€ìœ„
 public enum HitZone
 {
     Body,
