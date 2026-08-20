@@ -103,6 +103,9 @@ public sealed class ObjectPoolManager : MonoBehaviour
         private Transform root;
         private Stack<GameObject> stack = new();
 
+        // 스택 안에 들어 있는 인스턴스 집합. 이중 반납을 막는다.
+        private readonly HashSet<GameObject> pooled = new();
+
         public Pool(PoolConfig cfg, Transform poolRoot)
         {
             this.cfg = cfg;
@@ -119,6 +122,7 @@ public sealed class ObjectPoolManager : MonoBehaviour
                 var go = CreateNew();
                 go.SetActive(false);
                 stack.Push(go);
+                pooled.Add(go);
             }
         }
 
@@ -129,15 +133,21 @@ public sealed class ObjectPoolManager : MonoBehaviour
                 var go = CreateNew();
                 go.SetActive(false);
                 stack.Push(go);
+                pooled.Add(go);
             }
 
             var inst = stack.Pop();
+            pooled.Remove(inst);
             return SpawnInstance(inst, pos, rot, parent);
         }
 
         public void Release(GameObject inst)
         {
             if (!inst) return;
+
+            // 이미 반납된 인스턴스를 다시 넣으면 스택에 중복으로 쌓여
+            // 서로 다른 두 곳에 같은 오브젝트가 동시에 대여된다
+            if (!pooled.Add(inst)) return;
 
             if (inst.TryGetComponent<IPoolable>(out var p))
                 p.OnDespawned();

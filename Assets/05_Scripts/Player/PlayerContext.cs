@@ -12,7 +12,10 @@ public class PlayerContext : MonoBehaviour
 
     public float MaxHP { get { return maxHp; } }
     public float CurrentHP { get { return currentHp; } set { currentHp = value; OnHPChanged?.Invoke(CurrentHP, MaxHP); } }
-    public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
+    // moveSpeed는 Inspector 설정값으로 고정하고, 상태가 바꾸는 건 MoveSpeed만이다.
+    // 상대 연산(+=, -=)으로 되돌리면 OnExitState가 한 번이라도 누락됐을 때 값이 영구 왜곡된다.
+    public float BaseMoveSpeed => moveSpeed;
+    public float MoveSpeed { get; set; }
     public float JumpForce { get { return jumpForce; } set { jumpForce = value; } }
     public Transform GroundPivot { get { return groundPivot; } }
 
@@ -23,7 +26,7 @@ public class PlayerContext : MonoBehaviour
     [SerializeField] protected float jumpForce;
     [SerializeField] protected Transform groundPivot;
     public LayerMask groundLayer;
-    public float GRAVITY;
+    public float currentGravity;
     public string CurrentMoveState;
     public string CurrentActionState;
 
@@ -35,6 +38,8 @@ public class PlayerContext : MonoBehaviour
         Anim = GetComponent<Animator>();
         CharacterController = GetComponent<CharacterController>();
         player = GetComponent<PlayerController>();
+
+        MoveSpeed = moveSpeed;
 
         // StateMachine은 1회만 생성한다. OnEnable에서 재생성하면 진행 중인 상태와
         // OnExitState가 되돌려야 할 값(MoveSpeed, 카메라 높이)이 함께 유실된다.

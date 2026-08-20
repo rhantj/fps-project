@@ -15,6 +15,7 @@ public class IdleState : BasePlayerState
         if (Controller.isJump)
         {
             Controller.isJump = false;
+            Controller.PrevMovementState = StateName.Idle;
             playerCtx.MovementSM.ChangeState(StateName.Jump);
             return;
         }

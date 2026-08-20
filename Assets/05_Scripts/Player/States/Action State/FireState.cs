@@ -1,5 +1,4 @@
 using StateController;
-using UnityEngine;
 
 public class FireState : BaseState
 {

@@ -1,16 +1,13 @@
 public class SprintState : BasePlayerState
 {
-    float speed;
+    const float SPRINT_MULTIPLIER = 1.5f;
 
     public SprintState(PlayerController controller) : base(controller) { }
     public override void OnEnterState()
     {
         base.OnEnterState();
 
-        speed = playerCtx.MoveSpeed;
-        speed *= 0.5f;
-
-        playerCtx.MoveSpeed += speed;
+        playerCtx.MoveSpeed = playerCtx.BaseMoveSpeed * SPRINT_MULTIPLIER;
     }
 
     public override void OnUpdateState()
@@ -18,6 +15,7 @@ public class SprintState : BasePlayerState
         if (Controller.isJump && playerCtx.CharacterController.isGrounded)
         {
             Controller.isJump = false;
+            Controller.PrevMovementState = StateController.StateName.Sprint;
             playerCtx.MovementSM.ChangeState(StateController.StateName.Jump);
             return;
         }
@@ -33,6 +31,6 @@ public class SprintState : BasePlayerState
 
     public override void OnExitState()
     {
-        playerCtx.MoveSpeed -= speed;
+        playerCtx.MoveSpeed = playerCtx.BaseMoveSpeed;
     }
 }

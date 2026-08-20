@@ -15,6 +15,7 @@ public class MoveState : BasePlayerState
         if (Controller.isJump && playerCtx.CharacterController.isGrounded)
         {
             Controller.isJump = false;
+            Controller.PrevMovementState = StateName.Move;
             playerCtx.MovementSM.ChangeState(StateName.Jump);
             return;
         }

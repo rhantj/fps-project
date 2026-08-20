@@ -26,6 +26,10 @@ public abstract class BasePlayerState : BaseState
     {
         playerCtx = Controller.playerCtx;
 
+        // 진입할 때마다 기준 속도를 다시 읽는다. 배수를 쓰는 상태(Sprint, Crouch)는
+        // base 호출 뒤에 자기 값으로 덮어쓴다.
+        playerCtx.MoveSpeed = playerCtx.BaseMoveSpeed;
+
         // inputDir은 (x, 0, z)로 채워지므로 전진 성분은 z다. y를 쓰면 항상 0이다.
         Vector3 moveDir = Controller.transform.right * Controller.inputDir.x +
                           Controller.transform.forward * Controller.inputDir.z;
@@ -65,7 +69,7 @@ public abstract class BasePlayerState : BaseState
             gravity = minG;
         }
 
-        Controller.playerCtx.GRAVITY = gravity;
+        Controller.playerCtx.currentGravity = gravity;
     }
 
     public void ApplyGravity()

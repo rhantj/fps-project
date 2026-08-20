@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour, IDamageable, IRegistryAdder
     float pitch = 0;
     public int weaponIdx = 0;
     public bool isSprinting = false;
-    public bool ISGROUNDED;
+    public bool isGrounded;
     public bool isJump = false;
     public bool isCrouching = false;
     public bool prevFirePressed;
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour, IDamageable, IRegistryAdder
     private void Update()
     {
         OnMouseInput();
-        ISGROUNDED = playerCtx.CharacterController.isGrounded;
+        isGrounded = playerCtx.CharacterController.isGrounded;
     }
 
     private void OnEnable()
@@ -84,8 +84,8 @@ public class PlayerController : MonoBehaviour, IDamageable, IRegistryAdder
     {
         if (Time.timeScale <= 0.5f) return;
         mouseDelta = Mouse.current.delta.ReadValue();
-        float mouseX = mouseDelta.x * um.settingVM.Sensitivity;
-        float mouseY = mouseDelta.y * um.settingVM.Sensitivity;
+        float mouseX = mouseDelta.x * um.SettingVM.Sensitivity;
+        float mouseY = mouseDelta.y * um.SettingVM.Sensitivity;
 
         pitch -= mouseY;
         pitch = Mathf.Clamp(pitch, -85f, 85f);

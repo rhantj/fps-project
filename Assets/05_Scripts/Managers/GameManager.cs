@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
 public enum PlayState
@@ -40,7 +39,7 @@ public class GameManager : MonoBehaviour, IRegistryAdder
     private void Awake()
     {
         AddRegistry();
-        StartCoroutine(Co_PlayLoop());
+        SetCurrentState(PlayState.Pause);
     }
 
     void Start()
@@ -49,23 +48,6 @@ public class GameManager : MonoBehaviour, IRegistryAdder
         soundManager.PlayBGM(soundManager.GetClip("BGM_DejaVu"), transform.position, transform.rotation);
     }
 
-    private IEnumerator Co_PlayLoop()
-    {
-
-        SetCurrentState(PlayState.Pause);
-
-        while (true)
-        {
-            if (currentPlayState == PlayState.None) break;
-
-            while(currentPlayState == PlayState.Pause)
-            {
-                yield return null;
-            }
-
-            yield return null;
-        }
-    }
     public void AddRegistry()
     {
         StaticRegistry.Add(this);

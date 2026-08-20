@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class VFXModule : MonoBehaviour
 {

@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour, IRegistryAdder
 
     HUDViewModel hudVM;
     MenuViewModel menuVM;
-    public SettingViewModel settingVM { get; set; }
+    public SettingViewModel SettingVM { get; set; }
 
     List<UIPanel> rewindList = new();
     Dictionary<UIKey, UIPanel> panels = new();
@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour, IRegistryAdder
 
         hudVM = new HUDViewModel(player.playerCtx, player.weaponManager);
         menuVM = new MenuViewModel(this, gm);
-        settingVM = new SettingViewModel(this, sm);
+        SettingVM = new SettingViewModel(this, sm);
 
         Show(UIKey.HUD, true);
         ShowMenu(MenuMode.Start, true);
@@ -110,7 +110,7 @@ public class UIManager : MonoBehaviour, IRegistryAdder
             case UIKey.Setting:
                 if(panel is IBindable<SettingViewModel> setting)
                 {
-                    setting.Bind(settingVM);
+                    setting.Bind(SettingVM);
                 }
                 break;
         }
