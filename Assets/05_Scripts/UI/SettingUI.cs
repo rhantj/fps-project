@@ -62,6 +62,7 @@ public class SettingUI : UIPanel, IBindable<SettingViewModel>
 
             masterVol.onValueChanged.RemoveListener(vm.SetMaster);
             sfxVol.onValueChanged.RemoveListener(vm.SetSfx);
+            bgmVol.onValueChanged.RemoveListener(vm.SetBgm);
             sensitivitySlider.onValueChanged.RemoveListener(vm.SetSensitivity);
             resolutionDropdown.onValueChanged.RemoveListener(vm.SetResolution);
             screenModeDropdown.onValueChanged.RemoveListener(vm.SetScreenMode);

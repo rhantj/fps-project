@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,24 +20,24 @@ public abstract class Weapon : MonoBehaviour
     protected SoundManager soundManager;
     protected AudioClip fireSound;
 
-    [Header("References"), Tooltip("ÅºÈ¯°ú ÀÌÆåÆ®°¡ ³ª¿À´Â À§Ä¡")]
+    [Header("References"), Tooltip("íƒ„í™˜ê³¼ ì´í™íŠ¸ê°€ ë‚˜ì˜¤ëŠ” ìœ„ì¹˜")]
     public Transform muzzle;
     public Transform muzzleVFX;
 
-    [Header("Hit-scan"), Tooltip("È÷Æ® ½ºÄµ ¹æ½Ä¿¡ ÇÊ¿äÇÑ º¯¼ö")]
+    [Header("Hit-scan"), Tooltip("íˆíŠ¸ ìŠ¤ìº” ë°©ì‹ì— í•„ìš”í•œ ë³€ìˆ˜")]
     public float hitscanRange = 30f;
     public int hitDamage = 30;
 
-    [Header("Ballistic"), Tooltip("ÅºµµÇĞ °è»ê¿¡ ÇÊ¿äÇÑ º¯¼ö")]
+    [Header("Ballistic"), Tooltip("íƒ„ë„í•™ ê³„ì‚°ì— í•„ìš”í•œ ë³€ìˆ˜")]
     public float bulletSpeed = 800f;
     public float fireRate = 0.1f;
     public float maxRange = 150f;
 
-    [Header("Spread"), Tooltip("ÅºÈ¯ ÆÛÁü Á¤µµ")]
+    [Header("Spread"), Tooltip("íƒ„í™˜ í¼ì§ ì •ë„")]
     public float spreadAngle = 0.6f;
     Quaternion rotOffset = Quaternion.Euler(0, -90f, 0);
 
-    [Header("Mag"), Tooltip("ÀåÅº ¼ö Á¦ÇÑ")]
+    [Header("Mag"), Tooltip("ì¥íƒ„ ìˆ˜ ì œí•œ")]
     [SerializeField] int maxMag;
     [SerializeField] int currentMag;
     public int MaxMag { get { return maxMag; } set { maxMag = value; } }
@@ -62,7 +62,6 @@ public abstract class Weapon : MonoBehaviour
     protected virtual void Awake()
     {
         context = new();
-        fireStrategy = new HybridFireStrategy();
         modes = Enum.GetValues(typeof(FireMode)).Cast<FireMode>().ToArray();
 
         CurrentMag = MaxMag;
@@ -99,7 +98,8 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Fire(FireInputContext input)
     {
-        fireModes[currentMode].Tick(this, context, input);
+        if (!fireModes.TryGetValue(currentMode, out var mode)) return;
+        mode.Tick(this, context, input);
     }
 
     public virtual void DoFire(WeaponContext context)

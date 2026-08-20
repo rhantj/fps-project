@@ -4,7 +4,11 @@ public class SubWeapon : Weapon
 {
     protected override void Awake()
     {
-        base.Awake();
+        base.Awake(); 
+        fireStrategy = new HybridFireStrategy();
+
+        fireModes.Add(FireMode.Single, new SingleFireMode());
+        SetFireMode(FireMode.Single);
 
         context.muzzle = muzzle;
         context.fireRate = fireRate;
@@ -15,9 +19,6 @@ public class SubWeapon : Weapon
         context.spreadAngle = spreadAngle;
 
         CurrentMag = MaxMag;
-
-        fireModes.Add(FireMode.Single, new SingleFireMode());
-        SetFireMode(FireMode.Single);
     }
 
     protected override void Start()

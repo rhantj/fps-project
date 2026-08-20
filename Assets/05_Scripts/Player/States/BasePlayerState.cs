@@ -26,8 +26,9 @@ public abstract class BasePlayerState : BaseState
     {
         playerCtx = Controller.playerCtx;
 
+        // inputDir은 (x, 0, z)로 채워지므로 전진 성분은 z다. y를 쓰면 항상 0이다.
         Vector3 moveDir = Controller.transform.right * Controller.inputDir.x +
-                          Controller.transform.forward * Controller.inputDir.y;
+                          Controller.transform.forward * Controller.inputDir.z;
 
         if (moveDir.sqrMagnitude > 0.0001f)
             moveDir.Normalize();

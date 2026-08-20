@@ -35,10 +35,9 @@ public class PlayerContext : MonoBehaviour
         Anim = GetComponent<Animator>();
         CharacterController = GetComponent<CharacterController>();
         player = GetComponent<PlayerController>();
-    }
 
-    private void OnEnable()
-    {
+        // StateMachine은 1회만 생성한다. OnEnable에서 재생성하면 진행 중인 상태와
+        // OnExitState가 되돌려야 할 값(MoveSpeed, 카메라 높이)이 함께 유실된다.
         InitMovementStateMachine();
         InitActionStateMachine();
     }
@@ -86,7 +85,8 @@ public class PlayerContext : MonoBehaviour
 
     private void InitActionStateMachine()
     {
-        ActionSM = new StateMachine(StateName.ActionIdle, new ActionIdleState(player));
+        ActionSM = new StateMachine(StateName.ActionIdle, 
+                                    new ActionIdleState(player));
         ActionSM.AddState(StateName.Fire, new FireState(player));
         ActionSM.AddState(StateName.Reload, new ReloadState(player));
         ActionSM.AddState(StateName.Melee, new MeleeState(player));

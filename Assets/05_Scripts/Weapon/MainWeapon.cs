@@ -6,6 +6,12 @@ public class MainWeapon : Weapon
     protected override void Awake()
     {
         base.Awake();
+        fireStrategy = new HybridFireStrategy();
+
+        fireModes.Add(FireMode.Single, new SingleFireMode());
+        fireModes.Add(FireMode.SemiAuto, new SemiAutoFireMode());
+        fireModes.Add(FireMode.Auto, new FullAutoFireMode());
+        SetFireMode(FireMode.Auto);
 
         context.muzzle = muzzle;
         context.fireRate = fireRate;
@@ -17,11 +23,7 @@ public class MainWeapon : Weapon
 
         CurrentMag = MaxMag;
 
-        fireModes.Add(FireMode.Single, new SingleFireMode());
-        fireModes.Add(FireMode.SemiAuto, new SemiAutoFireMode());
-        fireModes.Add(FireMode.Auto, new FullAutoFireMode());
 
-        SetFireMode(FireMode.Auto);
     }
 
     protected override void Start()

@@ -29,8 +29,6 @@ public class HybridFireStrategy : IWeaponFireStrategy
 
                 DamageResult res = ctx.dms.Pipeline.Calculate(context);
                 dmg.ApplyDamage(res);
-
-                Debug.Log($"Final Damage = {res.finalDamage}");
             }
 
             SpawnTracer(hit.point);

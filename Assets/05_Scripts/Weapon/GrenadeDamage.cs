@@ -78,8 +78,6 @@ public class GrenadeDamage : MonoBehaviour
 
                 DamageResult res = ctx.dms.Pipeline.Calculate(context);
                 dmg.ApplyDamage(res);
-
-                Debug.Log($"Final Damage = {res.finalDamage}");
             }
         }
 

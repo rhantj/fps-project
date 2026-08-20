@@ -57,7 +57,5 @@ public class BulletManager : MonoBehaviour
 
         DamageResult res = dms.Pipeline.Calculate(ctx);
         dmg.ApplyDamage(res);
-
-        Debug.Log($"Final Damage = {res.finalDamage}");
     }
 }

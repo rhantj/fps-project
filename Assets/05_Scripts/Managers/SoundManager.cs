@@ -36,11 +36,14 @@ public class SoundManager : MonoBehaviour, IRegistryAdder
     public void PlaySound(AudioClip clip, Vector3 pos, Quaternion rot)
     {
         var speaker = ObjectPoolManager.Instance.Spawn(PoolId.SoundPlayer, pos, rot);
+        if (speaker == null) return;
+
         var audioSource = speaker.GetComponent<AudioSource>();
 
         audioSource.clip = clip;
         audioSource.volume = SFXVolume;
         audioSource.spatialBlend = 1.0f; // 3D sound
+        audioSource.loop = false;        // BGM에 쓰였던 인스턴스가 재사용될 수 있다
         audioSource.Play();
 
         StartCoroutine(Co_DespawnSoundPlayer(audioSource));
@@ -49,8 +52,16 @@ public class SoundManager : MonoBehaviour, IRegistryAdder
     public void PlayBGM(AudioClip clip, Vector3 pos, Quaternion rot)
     {
         if (currentAudio != null)
+        {
+            // Stop만 하면 스피커가 풀로 돌아가지 않아 호출할 때마다 인스턴스가 샌다
             currentAudio.Stop();
+            ObjectPoolManager.Instance.Despawn(currentAudio.gameObject);
+            currentAudio = null;
+        }
+
         var bgmPlayer = ObjectPoolManager.Instance.Spawn(PoolId.SoundPlayer, pos, rot);
+        if (bgmPlayer == null) return;
+
         var audioSource = bgmPlayer.GetComponent<AudioSource>();
         currentAudio = audioSource;
 

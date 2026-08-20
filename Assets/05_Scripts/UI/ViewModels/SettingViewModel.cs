@@ -41,7 +41,11 @@ public class SettingViewModel
     public void SetBgm(float v)
     {
         this.Bgm = v;
-        soundManager.CurrentAudio.volume = Bgm;
+
+        // BGM이 아직 재생 전일 수 있다. 다음 PlayBGM에도 반영되도록 값을 함께 보관한다.
+        soundManager.BGMVolume = Bgm;
+        if (soundManager.CurrentAudio != null)
+            soundManager.CurrentAudio.volume = Bgm;
         OnChanged?.Invoke();
     }
 
